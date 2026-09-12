@@ -22,23 +22,30 @@ async def request_id_middleware(request: Request, call_next):
 
     start_time = time.perf_counter()
 
+    excluded_paths = {
+        "/metrics",
+        "/docs",
+        "/openapi.json",
+    }
+
     try:
         response = await call_next(request)
 
         latency = time.perf_counter() - start_time
         latency_ms = latency * 1000
 
-        http_requests_total.labels(
-            method=request.method,
-            path=request.url.path,
-            status_code=str(response.status_code),
-        ).inc()
+        if request.url.path not in excluded_paths:
+            http_requests_total.labels(
+                method=request.method,
+                path=request.url.path,
+                status_code=str(response.status_code),
+            ).inc()
 
-        http_request_duration_seconds.labels(
-            method=request.method,
-            path=request.url.path,
-            status_code=str(response.status_code),
-        ).observe(latency)
+            http_request_duration_seconds.labels(
+                method=request.method,
+                path=request.url.path,
+                status_code=str(response.status_code),
+            ).observe(latency)
 
         logger.info(
             "HTTP request completed | method=%s | path=%s | "
@@ -53,5 +60,6 @@ async def request_id_middleware(request: Request, call_next):
         response.headers["X-Response-Time-Ms"] = f"{latency_ms:.2f}"
 
         return response
+
     finally:
         request_id_context.reset(token)
