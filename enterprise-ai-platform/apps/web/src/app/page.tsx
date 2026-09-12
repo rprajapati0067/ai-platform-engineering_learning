@@ -84,18 +84,18 @@ export default function DashboardPage() {
           </p>
 
           {/* Stock Search Bar */}
-          <div className="relative max-w-xl">
-            <Search className="absolute left-4 top-3.5 w-5 h-5 text-gray-400" />
+          <div className="flex items-center bg-card/90 border border-border/80 rounded-xl p-1.5 pl-4 focus-within:ring-2 focus-within:ring-primary-500/50 max-w-xl shadow-inner">
+            <Search className="w-5 h-5 text-gray-400 shrink-0 mr-3" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search NSE stock by symbol or company name (e.g. RELIANCE, TCS)..."
-              className="w-full pl-11 pr-32 py-3.5 bg-card/90 border border-border/80 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 text-sm shadow-inner"
+              placeholder="Search NSE stock by symbol or name (e.g. RELIANCE, TCS)..."
+              className="w-full bg-transparent text-white placeholder-gray-400 focus:outline-none text-sm py-1.5"
             />
             <Link
               href={searchQuery ? `/stock/${searchQuery.toUpperCase()}` : '/stock/RELIANCE'}
-              className="absolute right-2 top-2 px-4 py-2 bg-gradient-to-r from-primary-600 to-indigo-600 hover:from-primary-500 hover:to-indigo-500 text-white font-medium text-xs rounded-lg shadow-md transition flex items-center gap-1"
+              className="px-4 py-2.5 bg-gradient-to-r from-primary-600 to-indigo-600 hover:from-primary-500 hover:to-indigo-500 text-white font-semibold text-xs rounded-lg shadow-md transition flex items-center gap-1 shrink-0 ml-2 whitespace-nowrap"
             >
               Analyze Stock
               <ArrowUpRight className="w-3.5 h-3.5" />
