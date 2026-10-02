@@ -23,6 +23,7 @@ class ChatService:
 
         response = await self.llm_provider.generate(
             request.message,
+            request.model,
         )
 
         if not response.strip():
